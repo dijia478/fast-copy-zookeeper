@@ -114,23 +114,25 @@ public class FastCopyZookeeper {
             }
         });
 
-        // if (list.isEmpty()) {
-            byte[] data = sourceZk.getData().forPath(nodePath);
-            if (targetZk.checkExists().forPath(nodePath) != null) {
-                targetZk.setData()
-                        .withVersion(-1)
-                        .forPath(nodePath, data);
-            } else {
-                targetZk.create()
-                        // 递归创建所需父节点
-                        .creatingParentContainersIfNeeded()
-                        // 创建类型为持久节点
-                        .withMode(CreateMode.PERSISTENT)
-                        // 目录及内容
-                        .forPath(nodePath, data);
-            }
-            COUNT.incrementAndGet();
-        // }
+        byte[] data = sourceZk.getData().forPath(nodePath);
+        if (targetZk.checkExists().forPath(nodePath) != null) {
+            targetZk.setData()
+                    .withVersion(-1)
+                    .forPath(nodePath, data);
+        } else {
+            targetZk.create()
+                    // 递归创建所需父节点
+                    .creatingParentContainersIfNeeded()
+                    // 创建类型为持久节点
+                    .withMode(CreateMode.PERSISTENT)
+                    // 目录及内容
+                    .forPath(nodePath, data);
+        }
+        COUNT.incrementAndGet();
+        int i = COUNT.get();
+        if (i % 2000 == 0) {
+                System.out.println("已经复制" + i + "个节点的数据...");
+        }
     }
 
     /**
