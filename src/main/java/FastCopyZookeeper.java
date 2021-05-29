@@ -63,12 +63,26 @@ public class FastCopyZookeeper {
         connectionZk();
 
         System.out.println("开始删除targetZk：" + targetZkAddress);
+        checkRootPath();
         deleteTargetZk(ROOT_PATH);
         System.out.println("targetZk：" + targetZkAddress + "删除完成");
 
         System.out.println("开始复制targetZk：" + targetZkAddress);
         copyTargetZk(ROOT_PATH);
         System.out.println("数据复制完成，共耗时：" + (System.currentTimeMillis() - now) / 1000 + "秒, 处理" + COUNT.get() + "个节点");
+    }
+
+    /**
+     * 检查根节点是否存在，不存在就创建
+     *
+     * @throws Exception
+     */
+    private static void checkRootPath() throws Exception {
+        if (targetZk.checkExists().forPath(ROOT_PATH) == null) {
+            targetZk.create()
+                    .withMode(CreateMode.PERSISTENT)
+                    .forPath(ROOT_PATH, null);
+        }
     }
 
     /**
@@ -100,7 +114,7 @@ public class FastCopyZookeeper {
             }
         });
 
-        if (list.isEmpty()) {
+        // if (list.isEmpty()) {
             byte[] data = sourceZk.getData().forPath(nodePath);
             if (targetZk.checkExists().forPath(nodePath) != null) {
                 targetZk.setData()
@@ -116,7 +130,7 @@ public class FastCopyZookeeper {
                         .forPath(nodePath, data);
             }
             COUNT.incrementAndGet();
-        }
+        // }
     }
 
     /**
@@ -141,7 +155,7 @@ public class FastCopyZookeeper {
                 .guaranteed()
                 .deletingChildrenIfNeeded()
                 // 指定删除的版本号
-                .withVersion(-1)
+                // .withVersion(-1)
                 .forPath(nodePath);
     }
 
