@@ -93,7 +93,7 @@ public class FastCopyZookeeper {
     private static void setAddress(String[] args) {
         if (args.length == 0) {
             sourceZkAddress = "192.168.0.144:2181";
-        }  else {
+        } else {
             sourceZkAddress = args[0];
         }
         targetZkAddress = "127.0.0.1:2181";
@@ -134,7 +134,7 @@ public class FastCopyZookeeper {
         COUNT.incrementAndGet();
         int i = COUNT.get();
         if (i % 2000 == 0) {
-                System.out.println("已经复制" + i + "个节点的数据...");
+            System.out.println("已经复制" + i + "个节点的数据...");
         }
     }
 
