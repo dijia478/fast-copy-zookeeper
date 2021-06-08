@@ -67,7 +67,7 @@ public class FastCopyZookeeper {
         deleteTargetZk(ROOT_PATH);
         System.out.println("targetZk：" + targetZkAddress + "删除完成");
 
-        System.out.println("开始复制targetZk：" + targetZkAddress);
+        System.out.println("开始将数据从sourceZk：" + sourceZkAddress + " 复制到targetZk：" + targetZkAddress);
         copyTargetZk(ROOT_PATH);
         System.out.println("数据复制完成，共耗时：" + (System.currentTimeMillis() - now) / 1000 + "秒, 处理" + COUNT.get() + "个节点");
     }
