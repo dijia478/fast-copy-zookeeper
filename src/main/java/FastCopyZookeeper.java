@@ -91,8 +91,11 @@ public class FastCopyZookeeper {
      * @param args 工具参数，目前写死的地址，不传也可以
      */
     private static void setAddress(String[] args) {
-        sourceZkAddress = "192.168.0.144:2181";
-        // targetZkAddress = args[0];
+        if (args.length == 0) {
+            sourceZkAddress = "192.168.0.144:2181";
+        }  else {
+            sourceZkAddress = args[0];
+        }
         targetZkAddress = "127.0.0.1:2181";
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "256");
     }
